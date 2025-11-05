@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#006A4E" />
+    <meta 
+      name="description" 
+      content="GPTPayroll - Comprehensive Payroll and HR Management System for Zambian Businesses" 
+    />
+    <meta name="keywords" content="payroll, HR, Zambia, employee management, salary, tax, NAPSA, PAYE" />
+    <meta name="author" content="MiniMax Agent" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gptpayroll.com/" />
+    <meta property="og:title" content="GPTPayroll - Zambian Payroll & HR Management" />
+    <meta property="og:description" content="Comprehensive payroll and HR management system built specifically for Zambian businesses with tax compliance and payslip generation." />
+    <meta property="og:image" content="%PUBLIC_URL%/social-preview.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://gptpayroll.com/" />
+    <meta property="twitter:title" content="GPTPayroll - Zambian Payroll & HR Management" />
+    <meta property="twitter:description" content="Comprehensive payroll and HR management system built specifically for Zambian businesses with tax compliance and payslip generation." />
+    <meta property="twitter:image" content="%PUBLIC_URL%/social-preview.png" />
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png" />
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    
+    <!-- Title -->
+    <title>GPTPayroll - Zambian Payroll & HR Management System</title>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "GPTPayroll",
+      "description": "Comprehensive payroll and HR management system for Zambian businesses",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "MiniMax"
+      }
+    }
+    </script>
+    
+    <!-- Zambian Business Context -->
+    <style>
+      /* Zambian Flag Colors Reference */
+      :root {
+        --zambia-green: #006A4E;
+        --zambia-orange: #EF7D00;
+        --zambia-red: #DE2C17;
+        --zambia-black: #111827;
+        --zambia-yellow: #FFD700;
+      }
+      
+      /* Loading screen styles */
+      .initial-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+      
+      .loading-logo {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(45deg, var(--zambia-green), var(--zambia-orange));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+        animation: pulse 2s infinite;
+      }
+      
+      .loading-text {
+        font-family: 'Inter', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--zambia-green);
+        margin-bottom: 8px;
+      }
+      
+      .loading-subtext {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 32px;
+      }
+      
+      .loading-bar {
+        width: 200px;
+        height: 4px;
+        background-color: #e5e7eb;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      
+      .loading-progress {
+        height: 100%;
+        background: linear-gradient(90deg, var(--zambia-green), var(--zambia-orange), var(--zambia-red), var(--zambia-black));
+        border-radius: 2px;
+        animation: loading 2s ease-in-out infinite;
+      }
+      
+      .zambian-colors-strip {
+        width: 200px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--zambia-green), var(--zambia-yellow), var(--zambia-red), var(--zambia-black));
+        border-radius: 2px;
+        margin-top: 16px;
+      }
+      
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+      
+      @keyframes loading {
+        0% { width: 0%; }
+        50% { width: 70%; }
+        100% { width: 100%; }
+      }
+      
+      /* Hide loading screen when React app loads */
+      .app-loaded .initial-loading {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease-out;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #f9fafb;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+        padding: 24px;
+      ">
+        <div style="
+          width: 80px;
+          height: 80px;
+          background: linear-gradient(45deg, #006A4E, #EF7D00);
+          border-radius: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 24px;
+          color: white;
+          font-size: 32px;
+          font-weight: bold;
+        ">
+          GP
+        </div>
+        <h1 style="
+          color: #006A4E;
+          font-size: 24px;
+          font-weight: 700;
+          margin-bottom: 8px;
+        ">
+          GPTPayroll
+        </h1>
+        <p style="
+          color: #6b7280;
+          font-size: 16px;
+          margin-bottom: 24px;
+          max-width: 400px;
+        ">
+          Zambian Payroll & HR Management System
+        </p>
+        <div style="
+          color: #ef4444;
+          font-size: 14px;
+          background: #fef2f2;
+          padding: 16px;
+          border-radius: 8px;
+          border: 1px solid #fecaca;
+          max-width: 500px;
+        ">
+          <strong>JavaScript is required to run GPTPayroll.</strong>
+          <br><br>
+          Please enable JavaScript in your browser settings and refresh the page to access the full functionality of our payroll and HR management system.
+          <br><br>
+          <small>For assistance, please contact your system administrator.</small>
+        </div>
+      </div>
+    </noscript>
+    
+    <!-- Initial Loading Screen -->
+    <div class="initial-loading" id="initial-loading">
+      <div class="loading-logo">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19Z" fill="white"/>
+          <path d="M12 6C10.34 6 9 7.34 9 9C9 10.66 10.34 12 12 12C13.66 12 15 10.66 15 9C15 7.34 13.66 6 12 6ZM12 10C11.45 10 11 9.55 11 9C11 8.45 11.45 8 12 8C12.55 8 13 8.45 13 9C13 9.55 12.55 10 12 10Z" fill="white"/>
+          <path d="M18 17H17V16C17 14.67 16.67 13.5 16 12.5C15.5 12 15 11.5 15 11C15 10.45 15.45 10 16 10C16.55 10 17 10.45 17 11V12H18C18.55 12 19 12.45 19 13V14C19 14.55 18.55 15 18 15ZM18 16H17V14H18V16Z" fill="white"/>
+        </svg>
+      </div>
+      <div class="loading-text">GPTPayroll</div>
+      <div class="loading-subtext">Zambian Payroll & HR Management System</div>
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+      <div class="zambian-colors-strip"></div>
+    </div>
+    
+    <!-- React App Container -->
+    <div id="root"></div>
+    
+    <!-- Remove loading screen when React loads -->
+    <script>
+      // Remove initial loading screen when the page is fully loaded
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const loadingElement = document.getElementById('initial-loading');
+          if (loadingElement) {
+            loadingElement.style.opacity = '0';
+            loadingElement.style.pointerEvents = 'none';
+            setTimeout(function() {
+              loadingElement.remove();
+            }, 500);
+          }
+        }, 1000);
+      });
+      
+      // Basic browser compatibility check
+      if (!window.fetch || !window.Promise || !window.localStorage) {
+        document.body.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f9fafb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            padding: 24px;
+          ">
+            <h1 style="color: #dc2626; font-size: 24px; margin-bottom: 16px;">
+              Browser Not Supported
+            </h1>
+            <p style="color: #6b7280; max-width: 500px;">
+              GPTPayroll requires a modern web browser with JavaScript enabled. 
+              Please update your browser or try a different one.
+            </p>
+          </div>
+        `;
+      }
+    </script>
+  </body>
+</html>
