@@ -154,7 +154,7 @@ const EmployeeManagement: React.FC = () => {
       employee.email.toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesDepartment = !departmentFilter || employee.department === departmentFilter
-    const matchesStatus = !statusFilter || employee.status === statusFilter
+    const matchesStatus = !statusFilter || employee.employment_status === statusFilter
 
     return matchesSearch && matchesDepartment && matchesStatus
   })
@@ -290,11 +290,11 @@ const EmployeeManagement: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      employee.status === 'active' 
+                      employee.employment_status === 'active' 
                         ? 'bg-green-100 text-green-800' 
                         : 'bg-red-100 text-red-800'
                     }`}>
-                      {employee.status}
+                      {employee.employment_status}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

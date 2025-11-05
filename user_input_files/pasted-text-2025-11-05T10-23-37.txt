@@ -1,0 +1,129 @@
+The Netlify deploy errored, with the following guidance provided:
+
+Diagnosis:
+- The TypeScript compiler error shows "Property 'status' does not exist on type 'Employee'" ([line 79](#L79), context around [lines 156–160](#L156-L160)). This is a TypeScript type error: your code accesses employee.status in a filter, but the Employee type/interface definition does not include a status property.
+
+Solution:
+1. Locate the Employee type/interface definition in your repo (search for "interface Employee" or "type Employee"). Verify that the file is committed to the repo.
+2. Add the status property to that type with the correct type (make it optional if not always present). Example — update whatever file defines the Employee type (for example src/types.ts or src/models/Employee.ts):
+
+```ts
+// e.g. src/types.ts
+export interface Employee {
+  id: string;
+  name: string;
+  department?: string;
+  // add status (adjust union/type to match your data)
+  status?: 'active' | 'inactive' | string;
+  // other fields...
+}
+```
+
+3. If you prefer to keep type changes minimal or need a quick guard in the filter, change the filter logic to check for the property before accessing it:
+
+```ts
+const matchesStatus =
+  !statusFilter ||
+  ('status' in employee && employee.status === statusFilter);
+```
+
+or cast when necessary (temporary):
+
+```ts
+const matchesStatus = !statusFilter || (employee as any).status === statusFilter;
+```
+
+4. If the Employee objects come from an external source (e.g. Supabase), make sure the typed result includes status (update your fetch typings or the generated types).
+
+5. Rebuild locally to verify the fix:
+- Run the TypeScript/React build: npm run build
+- Or run a type check: npx tsc --noEmit
+
+6. Commit the change and push. Netlify will pick up the updated type and the build should succeed.
+
+If you need me to point to the exact file to change in this repo, tell me where your Employee type is declared (or share the path), and I’ll provide the exact code diff.
+
+The relevant error logs are:
+
+Line 0: build-image version: 0885bcbb999ebd19472160b218ceb07f99c4e7d1 (noble)
+Line 1: buildbot version: 1049fb5a2bbbd0b9929a4139d52a218b72b00555
+Line 2: Fetching cached dependencies
+Line 3: Failed to fetch cache, continuing with build
+Line 4: Starting to prepare the repo for build
+Line 5: No cached dependencies found. Cloning fresh repo
+Line 6: git clone --filter=blob:none https://github.com/cynojine/gpayroll
+Line 7: Preparing Git Reference refs/heads/main
+Line 8: Starting to install dependencies
+Line 9: v22.21.1 is already installed.
+Line 10: Now using node v22.21.1 (npm v10.9.4)
+Line 11: Enabling Node.js Corepack
+Line 12: Started restoring cached build plugins
+Line 13: Finished restoring cached build plugins
+Line 21: npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+npm warn deprecated rimraf@3.0.2: R
+Line 22: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+Line 23: npm warn deprecated rollup-plugin-terser@7.0.2: This package has been deprecated and is no longer maintained. Please use @rollup
+Line 24: npm warn deprecated sourcemap-codec@1.4.8: Please use @jridgewell/sourcemap-codec instead
+Line 25: npm warn deprecated stable@0.1.8: Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See
+Line 26: npm warn deprecated q@1.5.1: You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript develo
+Line 27: npm warn deprecated
+Line 28: npm warn deprecated (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
+Line 29: npm warn deprecated workbox-google-analytics@6.6.0: It is not compatible with newer versions of GA starting with v4, as long as 
+Line 30: npm warn deprecated workbox-cacheable-response@6.6.0: workbox-background-sync@6.6.0
+Line 31: npm warn deprecated w3c-hr-time@1.0.2: Use your platform's native performance.now() and performance.timeOrigin.
+npm warn depreca
+Line 32: npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+Line 33: npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.18.6: This proposal has been merged to the ECMAScript s
+Line 34: npm warn deprecated @babel/plugin-proposal-numeric-separator@7.18.6: This proposal has been merged to the ECMAScript standard an
+Line 35: npm warn deprecated @babel/plugin-proposal-private-methods@7.18.6: This proposal has been merged to the ECMAScript standard and 
+Line 36: npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and
+Line 37: npm warn deprecated @babel/plugin-proposal-optional-chaining@7.21.0: This proposal has been merged to the ECMAScript standard an
+Line 38: npm warn deprecated @babel/plugin-proposal-private-property-in-object@7.21.11: This proposal has been merged to the ECMAScript s
+Line 39: npm warn deprecated source-map@0.8.0-beta.0: The work that was done in this beta branch won't be included in future versions
+npm
+Line 40: npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other 
+Line 41: added 1399 packages in 37s
+Line 67: [36m[1m❯ Context[22m[39m
+Line 68:   production
+Line 69: [96m[1m​[22m[39m
+Line 70: [96m[1mBuild command from Netlify app                                [22m[39m
+Line 71: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 72: ​
+Line 73: [36m$ npm run build[39m
+Line 74: > local-payroll-app@1.0.0 build
+Line 75: > react-scripts build
+Line 76: Creating an optimized production build...
+Line 77: [31mFailed to compile.[39m
+Line 78: [31m[39m
+Line 79: [90mTS2339: [39mProperty 'status' does not exist on type 'Employee'.
+Line 80:   [0m [90m 155 |[39m
+Line 81:    [90m 156 |[39m     [36mconst[39m matchesDepartment [33m=[39m [33m![39mdepartmentFilter [33m||[39m employee[33m.[3
+Line 82:   [31m[1m>[22m[39m[90m 157 |[39m     [36mconst[39m matchesStatus [33m=[39m [33m![39mstatusFilter [33m||[39m employ
+Line 83:    [90m     |[39m                                                     [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m
+Line 84:    [90m 158 |[39m
+Line 85:    [90m 159 |[39m     [36mreturn[39m matchesSearch [33m&&[39m matchesDepartment [33m&&[39m matchesStatus
+Line 86:    [90m 160 |[39m   })[0m
+Line 87: [91m[1m​[22m[39m
+Line 88: [91m[1m"build.command" failed                                        [22m[39m
+Line 89: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 90: ​
+Line 91:   [31m[1mError message[22m[39m
+Line 92:   Command failed with exit code 1: npm run build
+Line 93: ​
+Line 94:   [31m[1mError location[22m[39m
+Line 95:   In Build command from Netlify app:
+Line 96:   npm run build
+Line 97: ​
+Line 98:   [31m[1mResolved config[22m[39m
+Line 99:   build:
+Line 100:     command: npm run build
+Line 101:     commandOrigin: ui
+Line 102:     environment:
+Line 103:       - REACT_APP_SUPABASE_ANON_KEY
+Line 104:       - REACT_APP_SUPABASE_URL
+Line 105:     publish: /opt/build/repo/build
+Line 106:     publishOrigin: ui
+Line 107: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 108: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 109: Failing build: Failed to build site
+Line 110: Finished processing build request in 58.45s
